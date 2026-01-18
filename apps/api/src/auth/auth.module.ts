@@ -13,8 +13,7 @@ import type { StringValue } from 'ms';
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
-        const expiresIn = config.get<StringValue>('JWT_EXPIRES_IN') ?? '5m';
-
+        const expiresIn = config.get<StringValue>('JWT_EXPIRES_IN', '5m');
         return {
           secret: config.get<string>('JWT_SECRET', 'sbx-secret'),
           signOptions: { expiresIn },

@@ -2,6 +2,8 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
+import { PrismaService } from '../src/prisma/prisma.service';
+import { prismaMock } from './mocks/prisma.mock';
 
 describe('Health (e2e)', () => {
   let app: INestApplication;
@@ -9,7 +11,10 @@ describe('Health (e2e)', () => {
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideProvider(PrismaService)
+      .useValue(prismaMock)
+      .compile();
 
     app = module.createNestApplication();
     await app.init();

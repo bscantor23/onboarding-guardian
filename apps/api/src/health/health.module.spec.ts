@@ -3,7 +3,7 @@ import { HealthModule } from './health.module';
 import { HealthController } from './health.controller';
 
 describe('HealthModule', () => {
-  it('should compile and resolve HealthController', async () => {
+  it('should compile and resolve providers', async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [HealthModule],
     }).compile();

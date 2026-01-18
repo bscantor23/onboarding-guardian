@@ -33,7 +33,7 @@ describe('AuthController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('login() should call Authservice.login and return a successful result', async () => {
+  it('login() should call the service method and return a successful result', async () => {
     const dto = { username: 'guardian', password: 'onboading_pass' };
     const expected = { accessToken: 'jwt.token' };
 

@@ -2,6 +2,8 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { Test } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
+import { PrismaService } from '../src/prisma/prisma.service';
+import { prismaMock } from './mocks/prisma.mock';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication;
@@ -12,11 +14,14 @@ describe('AuthController (e2e)', () => {
     process.env.DEMO_USER = 'guardian';
     process.env.DEMO_PASS = 'onboarding_pass';
 
-    const moduleref = await Test.createTestingModule({
+    const module = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideProvider(PrismaService)
+      .useValue(prismaMock)
+      .compile();
 
-    app = moduleref.createNestApplication();
+    app = module.createNestApplication();
 
     app.useGlobalPipes(
       new ValidationPipe({
@@ -33,7 +38,7 @@ describe('AuthController (e2e)', () => {
     await app.close();
   });
 
-  it('POST /auth/login -> returns accessToken', async () => {
+  it('POST /auth/login returns accessToken', async () => {
     const res = await request(app.getHttpServer())
       .post('/auth/login')
       .send({ username: 'guardian', password: 'onboarding_pass' })
@@ -44,14 +49,14 @@ describe('AuthController (e2e)', () => {
     expect(res.body.accessToken.length).toBeGreaterThan(10);
   });
 
-  it('POST /auth/login -> 401 with invalid credentials', async () => {
+  it('POST /auth/login (401) with invalid credentials', async () => {
     await request(app.getHttpServer())
       .post('/auth/login')
       .send({ username: 'ward', password: 'board' })
       .expect(401);
   });
 
-  it('POST /auth/login -> 400 with missing fields', async () => {
+  it('POST /auth/login (400) with missing fields', async () => {
     await request(app.getHttpServer())
       .post('/auth/login')
       .send({ username: 'guardian' })
