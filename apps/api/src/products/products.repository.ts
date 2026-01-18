@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { PRODUCT_SELECT } from './constants/product.select';
 import { PrismaService } from '../prisma/prisma.service';
+import { PRODUCT_SELECT } from './selects/product.select';
 
 @Injectable()
 export class ProductsRepository {

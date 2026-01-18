@@ -1,4 +1,6 @@
-export const PRODUCT_SELECT = {
+import { Prisma } from '@prisma/client';
+
+export const PRODUCT_SELECT = Prisma.validator<Prisma.ProductSelect>()({
   id: true,
   code: true,
   name: true,
@@ -25,4 +27,8 @@ export const PRODUCT_SELECT = {
       description: true,
     },
   },
-} as const;
+});
+
+export type ProductSelectResult = Prisma.ProductGetPayload<{
+  select: typeof PRODUCT_SELECT;
+}>;

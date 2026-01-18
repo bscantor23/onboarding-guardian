@@ -1,7 +1,8 @@
 import { ProductResponseDto } from '../dto/product-response.dto';
+import { ProductSelectResult } from '../selects/product.select';
 
 export class ProductMapper {
-  static toResponse(p: any): ProductResponseDto {
+  static toResponse(p: ProductSelectResult): ProductResponseDto {
     return {
       id: p.id,
       code: p.code,

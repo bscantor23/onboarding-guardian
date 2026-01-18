@@ -6,6 +6,27 @@ generator client {
     provider = "prisma-client-js"
 }
 
+enum OnBoardingStatus {
+    REQUESTED
+    APPROVED
+    REJECTED
+}
+
+model Onboarding {
+    id            String           @id @default(uuid())
+    fullName      String
+    document      String
+    email         String
+    initialAmount Decimal          @db.Decimal(18, 2)
+    status        OnBoardingStatus @default(REQUESTED)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([document])
+    @@index([email])
+}
+
 model Currency {
     id       String @id @default(uuid())
     code     String @unique

@@ -1,7 +1,7 @@
-import { PrismaService } from '../prisma/prisma.service';
-import { ProductsRepository } from './products.repository';
 import { Test } from '@nestjs/testing';
-import { PRODUCT_SELECT } from './constants/product.select';
+import { ProductsRepository } from './products.repository';
+import { PRODUCT_SELECT } from './selects/product.select';
+import { PrismaService } from '../prisma/prisma.service';
 
 describe('ProductsRepository', () => {
   let repo: ProductsRepository;
