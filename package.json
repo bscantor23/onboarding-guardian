@@ -1,0 +1,29 @@
+{
+  "name": "onboarding-guardian",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:generate": "dotenv -e .env -- prisma generate",
+    "db:migrate": "dotenv -e .env -- prisma migrate dev",
+    "db:seed": "dotenv -e .env -- prisma db seed",
+    "db:reset": "node ./node_modules/.bin/prisma migrate reset --force",
+    "db:studio": "dotenv -e .env -- prisma studio",
+    "dev:api": "yarn workspace api start:dev",
+    "dev:web": "yarn workspace web dev",
+    "build:api": "yarn workspace api build",
+    "build:web": "yarn workspace web build"
+  },
+  "devDependencies": {
+    "dotenv": "^17.2.3",
+    "dotenv-cli": "^11.0.0",
+    "prisma": "^7.2.0",
+    "tsx": "^4.21.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^7.2.0"
+  }
+}
