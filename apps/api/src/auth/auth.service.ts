@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { LoginResponseDto } from './dto/login-response.dto';
 
 @Injectable()
 export class AuthService {
@@ -9,7 +10,7 @@ export class AuthService {
     private readonly config: ConfigService,
   ) {}
 
-  async login(username: string, password: string) {
+  async login(username: string, password: string): Promise<LoginResponseDto> {
     const expectedUsername = this.config.get<string>('DEMO_USER');
     const expectedPassword = this.config.get<string>('DEMO_PASS');
 
@@ -18,8 +19,8 @@ export class AuthService {
     }
 
     const payload = { sub: username, username };
-    const accessToken = await this.jwtService.signAsync(payload);
+    const token = await this.jwtService.signAsync(payload);
 
-    return { accessToken };
+    return new LoginResponseDto(token);
   }
 }
