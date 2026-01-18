@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@add-plugin "@tailwindcss/forms";
+
+@theme {
+  --color-primary: #007a6c;
+  --color-background: #f7f7f8;
+  --color-surface: #ffffff;
+  --color-ink: #0c1d1b;
+  --color-mint: #e6f4f3;
+  --color-mintBorder: #cdeae6;
+  --color-mintText: #45a196;
+
+  --font-sans: "Manrope", sans-serif;
+
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-ink);
+}
