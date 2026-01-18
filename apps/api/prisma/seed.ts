@@ -81,6 +81,7 @@ async function main() {
 
   const products = [
     {
+      id: 'ebb61622-3bd9-4886-aa4b-bc99264fea24',
       code: 'CTA_AHO_DIG',
       name: 'Cuenta Ahorros Digital',
       description: 'Apertura digital sin cuota de manejo',

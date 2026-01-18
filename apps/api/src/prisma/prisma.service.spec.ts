@@ -1,21 +1,51 @@
 import { PrismaService } from './prisma.service';
 
+jest.mock('pg', () => ({
+  Pool: jest.fn().mockImplementation(() => ({
+    end: jest.fn().mockResolvedValue(undefined),
+  })),
+}));
+
+jest.mock('@prisma/adapter-pg', () => ({
+  PrismaPg: jest.fn().mockImplementation(() => ({})),
+}));
+
+jest.mock('@prisma/client', () => {
+  class PrismaClientMock {
+    $connect = jest.fn().mockResolvedValue(undefined);
+    $disconnect = jest.fn().mockResolvedValue(undefined);
+  }
+
+  return { PrismaClient: PrismaClientMock };
+});
+
 describe('PrismaService', () => {
-  let service: PrismaService;
+  const originalEnv = process.env;
 
   beforeEach(() => {
-    service = Object.create(PrismaService.prototype) as PrismaService;
-    (service as any).$connect = jest.fn().mockResolvedValue(undefined);
-    (service as any).$disconnect = jest.fn().mockResolvedValue(undefined);
+    process.env = { ...originalEnv };
+    jest.clearAllMocks();
   });
 
-  it('onModuleInit should call $connect', async () => {
+  afterAll(() => {
+    process.env = originalEnv;
+  });
+
+  it('should throw if DATABASE_URL is missing', () => {
+    delete process.env.DATABASE_URL;
+    expect(() => new PrismaService()).toThrow();
+  });
+
+  it('should init and destroy correctly when DATABASE_URL exists', async () => {
+    process.env.DATABASE_URL = 'postgresql://user:pass@localhost:5432/db';
+
+    const service = new PrismaService();
+
     await service.onModuleInit();
-    expect((service as any).$connect).toHaveBeenCalledTimes(1);
-  });
-
-  it('onModuleDestroy should call $disconnect', async () => {
     await service.onModuleDestroy();
+
+    expect((service as any).$connect).toHaveBeenCalledTimes(1);
     expect((service as any).$disconnect).toHaveBeenCalledTimes(1);
+    expect((service as any).pool.end).toHaveBeenCalledTimes(1);
   });
 });
