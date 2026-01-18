@@ -4,6 +4,10 @@ import { AuthModule } from './auth/auth.module';
 import { HealthModule } from './health/health.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule, HealthModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: ['../../.env'] }),
+    AuthModule,
+    HealthModule,
+  ],
 })
 export class AppModule {}

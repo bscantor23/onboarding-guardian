@@ -1,0 +1,60 @@
+datasource db {
+    provider = "postgresql"
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model Currency {
+    id       String @id @default(uuid())
+    code     String @unique
+    name     String
+    symbol   String
+    decimals Int    @default(2)
+
+    products Product[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([code])
+}
+
+model ProductType {
+    id          String  @id @default(uuid())
+    code        String  @unique
+    name        String
+    description String?
+
+    products Product[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([code])
+}
+
+model Product {
+    id          String  @id @default(uuid())
+    code        String  @unique
+    name        String
+    description String?
+
+    productTypeId String
+    type          ProductType @relation(fields: [productTypeId], references: [id], onDelete: Restrict)
+
+    currencyId String
+    currency   Currency @relation(fields: [currencyId], references: [id], onDelete: Restrict)
+
+    minAmount Decimal @db.Decimal(18, 2)
+    maxAmount Decimal @db.Decimal(18, 2)
+    active    Boolean @default(true)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([active])
+    @@index([productTypeId])
+    @@index([currencyId])
+}
