@@ -11,5 +11,13 @@
     "dev:web": "yarn workspace web dev",
     "build:api": "yarn workspace api build",
     "build:web": "yarn workspace web build"
+  },
+  "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@fortawesome/react-fontawesome": "^3.1.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/container-queries": "^0.1.1",
+    "@tailwindcss/forms": "^0.5.11"
   }
 }
