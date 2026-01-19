@@ -1,4 +1,5 @@
 import { apiClient, toApiClientError } from "../http/axios-client";
+import { webApiClient, toWebApiClientError } from "../http/web-api-client";
 
 export type Product = {
   id: string;
@@ -53,16 +54,20 @@ function mappingGetByIdResponse(data: unknown): Product {
 export class ProductsService {
   async list(): Promise<Product[]> {
     try {
-      const { data } = await apiClient.get("/products");
+      const base =
+        process.env.NEXT_PUBLIC_WEB_API_BASE_URL || "http://localhost:3000";
+      const url = new URL("/api/products", base).toString();
+      const { data } = await webApiClient.get(url);
       return mappingListResponse(data);
     } catch (e: unknown) {
-      throw toApiClientError(e);
+      throw toWebApiClientError(e);
     }
   }
 
   async getById(id: string): Promise<Product> {
     try {
-      const { data } = await apiClient.get(`/products/${id}`);
+      const safeId = encodeURIComponent(id);
+      const { data } = await apiClient.get(`/products/${safeId}`);
       return mappingGetByIdResponse(data);
     } catch (e: unknown) {
       throw toApiClientError(e);

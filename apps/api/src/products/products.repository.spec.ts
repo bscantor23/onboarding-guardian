@@ -37,6 +37,7 @@ describe('ProductsRepository', () => {
     expect(prismaMock.product.findMany).toHaveBeenCalledTimes(1);
     expect(prismaMock.product.findMany).toHaveBeenCalledWith({
       orderBy: { createdAt: 'desc' },
+      where: { active: true },
       select: PRODUCT_SELECT,
     });
   });

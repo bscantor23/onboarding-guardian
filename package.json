@@ -5,19 +5,13 @@
     "apps/*"
   ],
   "scripts": {
-    "db:up": "docker compose up -d",
-    "db:down": "docker compose down",
-    "dev:api": "yarn workspace api start:dev",
-    "dev:web": "yarn workspace web dev",
-    "build:api": "yarn workspace api build",
-    "build:web": "yarn workspace web build"
-  },
-  "dependencies": {
-    "@fortawesome/free-solid-svg-icons": "^7.1.0",
-    "@fortawesome/react-fontawesome": "^3.1.1"
-  },
-  "devDependencies": {
-    "@tailwindcss/container-queries": "^0.1.1",
-    "@tailwindcss/forms": "^0.5.11"
+    "docker:up:infra": "docker compose up -d postgres redis",
+    "docker:up:apps": "docker compose up -d api web",
+    "docker:down": "docker compose down",
+    "docker:reset": "docker compose down -v",
+    "db:migrate": "docker compose exec -w /app/apps/api api yarn prisma migrate deploy",
+    "db:seed": "docker compose exec -w /app/apps/api api sh -lc \"yarn prisma:reset && yarn prisma:seed\"",
+    "db:init": "yarn docker:up:infra && docker compose up -d api && yarn db:migrate && yarn db:seed",
+    "dev:all": "yarn db:init && yarn docker:up:apps && docker compose logs -f api web"
   }
 }

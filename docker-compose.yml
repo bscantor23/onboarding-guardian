@@ -1,9 +1,7 @@
-version: "3.9"
-
 services:
   postgres:
     image: postgres:16
-    container_name: postgres-db
+    container_name: onboarding-postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
@@ -13,6 +11,72 @@ services:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d onboarding_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7
+    container_name: onboarding-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "PING"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: onboarding-api
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - /app/node_modules
+      - /app/apps/api/node_modules
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      JWT_SECRET: MzNiNjdmZDMtYzhhZS00ZmZiLWIxZmUtZmJiOGY3ZmNmZTlk
+      JWT_EXPIRES_IN: 5m
+      DEMO_USER: guardian
+      DEMO_PASS: onboarding_pass
+      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/onboarding_db?schema=public"
+      API_PORT: 3001
+    ports:
+      - "3001:3001"
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: onboarding-web
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_started
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:3001
+      NEXT_PUBLIC_WEB_API_BASE_URL: http://localhost:3000
+      API_INTERNAL_BASE_URL: http://api:3001
+      NEXT_PUBLIC_API_JWT_SECRET: MzNiNjdmZDMtYzhhZS00ZmZiLWIxZmUtZmJiOGY3ZmNmZTlk
+      REDIS_URL: redis://redis:6379
+      PRODUCTS_CACHE_TTL: 120
+    ports:
+      - "3000:3000"
 
 volumes:
   postgres_data:
+  redis_data:
