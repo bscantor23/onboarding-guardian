@@ -23,16 +23,15 @@ const defaultGateway: AuthGateway = {
     const response = await authService.login(payload);
 
     localStorage.setItem("access_token", response.accessToken);
-
-    window.location.href = "/dashboard";
+    globalThis.location.href = "/dashboard";
   },
 };
 
 export function LoginForm({
   gateway = defaultGateway,
-}: {
+}: Readonly<{
   gateway?: AuthGateway;
-}) {
+}>) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -85,7 +84,7 @@ export function LoginForm({
         rightSlot={
           <a
             className="text-xs font-bold text-primary hover:underline"
-            href="#"
+            href="/"
           >
             ¿Olvidaste tu clave?
           </a>

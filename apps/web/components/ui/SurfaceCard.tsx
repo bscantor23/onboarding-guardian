@@ -5,7 +5,10 @@ type SurfaceCardProps = {
   className?: string;
 };
 
-export function SurfaceCard({ children, className }: SurfaceCardProps) {
+export function SurfaceCard({
+  children,
+  className,
+}: Readonly<SurfaceCardProps>) {
   return (
     <section
       className={cn(

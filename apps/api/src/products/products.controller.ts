@@ -1,14 +1,15 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { ProductResponseDto } from './dto/product-response.dto';
 import { ApiNotFoundResponse, ApiOkResponse, ApiParam } from '@nestjs/swagger';
+import { ProductListResponseDto } from './dto/product-list-response.dto';
+import { ProductResponseDto } from './dto/product-response.dto';
 
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Get()
-  getProducts(): Promise<ProductResponseDto[]> {
+  getProducts(): Promise<ProductListResponseDto[]> {
     return this.productsService.findAll();
   }
 

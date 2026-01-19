@@ -56,11 +56,24 @@ model ProductType {
     @@index([code])
 }
 
+enum AudienceType {
+    NATURAL
+    BUSINESS
+    BOTH
+}
+
 model Product {
-    id          String  @id @default(uuid())
-    code        String  @unique
-    name        String
-    description String?
+    id           String  @id @default(uuid())
+    code         String  @unique
+    name         String
+    headline     String
+    generalInfo  String?
+    requirements String?
+    term         String?
+
+    audienceType AudienceType @default(BOTH)
+    rateType     String?      @default("EA")
+    rate         Decimal      @db.Decimal(10, 2)
 
     productTypeId String
     type          ProductType @relation(fields: [productTypeId], references: [id], onDelete: Restrict)

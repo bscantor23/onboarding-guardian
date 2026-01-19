@@ -1,6 +1,10 @@
 import 'dotenv/config';
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
+import { PRODUCT_TYPES } from './constants/product-types';
+import { CURRENCIES } from './constants/currencies';
+import { DESCRIPTIONS } from './constants/descriptions';
+import { randomUUID } from 'crypto';
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL,
@@ -8,14 +12,54 @@ const adapter = new PrismaPg({
 
 const prisma = new PrismaClient({ adapter });
 
-async function main() {
-  const currencies = [
-    { code: 'COP', name: 'Peso Colombiano', symbol: '$', decimals: 2 },
-    { code: 'USD', name: 'Dólar Americano', symbol: '$', decimals: 2 },
-    { code: 'EUR', name: 'Euro', symbol: '€', decimals: 2 },
-  ];
+const mapHelper = <T>(map: readonly T[]): T => {
+  return map[Math.floor(Math.random() * map.length)];
+};
 
-  for (const currency of currencies) {
+function amountRangeHelper(currencyCode: string, productTypeCode: string) {
+  const isCreditLike =
+    productTypeCode === 'LOAN' || productTypeCode === 'CREDIT';
+
+  let minBase = 0;
+  let minRange = 0;
+  let maxBase = 0;
+  let maxRange = 0;
+
+  if (currencyCode === 'COP') {
+    if (isCreditLike) {
+      minBase = 300000;
+      minRange = 2700000;
+      maxBase = 10000000;
+      maxRange = 190000000;
+    } else {
+      maxBase = 1000000;
+      maxRange = 99000000;
+    }
+  } else if (currencyCode === 'USD' || currencyCode === 'EUR') {
+    if (isCreditLike) {
+      minBase = 50;
+      minRange = 450;
+      maxBase = 2000;
+      maxRange = 48000;
+    } else {
+      maxBase = 200;
+      maxRange = 19800;
+    }
+  }
+
+  const min = minBase + Math.floor(Math.random() * (minRange + 1));
+  let max = maxBase + Math.floor(Math.random() * (maxRange + 1));
+
+  if (max <= min) max = min + 1;
+
+  return {
+    min: min.toFixed(2),
+    max: max.toFixed(2),
+  };
+}
+
+async function main() {
+  for (const currency of CURRENCIES) {
     await prisma.currency.upsert({
       where: { code: currency.code },
       update: {},
@@ -23,40 +67,7 @@ async function main() {
     });
   }
 
-  const types = [
-    {
-      code: 'SAVINGS',
-      name: 'Cuenta de Ahorros',
-      description: 'Cuentas para ahorro personal',
-    },
-    {
-      code: 'CHECKING',
-      name: 'Cuenta Corriente',
-      description: 'Cuentas transaccionales empresariales',
-    },
-    {
-      code: 'CREDIT',
-      name: 'Crédito',
-      description: 'Tarjetas y cupos de crédito',
-    },
-    {
-      code: 'INVESTMENT',
-      name: 'Inversión',
-      description: 'Productos de inversión',
-    },
-    {
-      code: 'LOAN',
-      name: 'Préstamo',
-      description: 'Créditos de consumo e hipotecarios',
-    },
-    {
-      code: 'DIGITAL',
-      name: 'Cuenta Digital',
-      description: 'Productos 100% digitales',
-    },
-  ];
-
-  for (const type of types) {
+  for (const type of PRODUCT_TYPES) {
     await prisma.productType.upsert({
       where: { code: type.code },
       update: {},
@@ -67,96 +78,58 @@ async function main() {
   const currencyMap = await prisma.currency.findMany();
   const typeMap = await prisma.productType.findMany();
 
-  const getCurrencyId = (code: string) => {
-    const currency = currencyMap.find((c) => c.code === code);
-    if (!currency) throw new Error(`Currency not found: ${code}`);
-    return currency.id;
-  };
+  for (let i = 1; i <= 20; i++) {
+    const currency = mapHelper(currencyMap);
+    const type = mapHelper(typeMap);
 
-  const getTypeId = (code: string) => {
-    const type = typeMap.find((t) => t.code === code);
-    if (!type) throw new Error(`ProductType not found: ${code}`);
-    return type.id;
-  };
+    const name = mapHelper(DESCRIPTIONS.names);
+    const audienceType = mapHelper(DESCRIPTIONS.audiences);
+    const rateType = mapHelper(DESCRIPTIONS.rateTypes);
+    const headline = mapHelper(DESCRIPTIONS.headlines);
+    const generalInfo = mapHelper(DESCRIPTIONS.generalInfos);
+    const requirements = mapHelper(DESCRIPTIONS.requirements);
+    const term = mapHelper(DESCRIPTIONS.termPool);
 
-  const products = [
-    {
-      id: 'ebb61622-3bd9-4886-aa4b-bc99264fea24',
-      code: 'CTA_AHO_DIG',
-      name: 'Cuenta Ahorros Digital',
-      description: 'Apertura digital sin cuota de manejo',
-      type: 'SAVINGS',
-      currency: 'COP',
-      min: '0.00',
-      max: '100000000.00',
-    },
-    {
-      code: 'CTA_DIG_USD',
-      name: 'Cuenta Digital USD',
-      description: 'Cuenta digital en dólares',
-      type: 'DIGITAL',
-      currency: 'USD',
-      min: '10.00',
-      max: '500000.00',
-    },
-    {
-      code: 'CTA_CORR',
-      name: 'Cuenta Corriente Empresarial',
-      description: 'Cuenta para manejo empresarial',
-      type: 'CHECKING',
-      currency: 'COP',
-      min: '100000.00',
-      max: '500000000.00',
-    },
-    {
-      code: 'TC_CLAS',
-      name: 'Tarjeta Crédito Clásica',
-      description: 'Tarjeta de crédito básica',
-      type: 'CREDIT',
-      currency: 'COP',
-      min: '500000.00',
-      max: '20000000.00',
-    },
-    {
-      code: 'PRE_CONS',
-      name: 'Crédito de Consumo',
-      description: 'Préstamo de libre inversión',
-      type: 'LOAN',
-      currency: 'COP',
-      min: '1000000.00',
-      max: '100000000.00',
-    },
-    {
-      code: 'CDT_12M',
-      name: 'CDT 12 Meses',
-      description: 'Inversión a término fijo',
-      type: 'INVESTMENT',
-      currency: 'COP',
-      min: '1000000.00',
-      max: '1000000000.00',
-    },
-  ];
+    const rate = new Prisma.Decimal((10 + Math.random() * 20).toFixed(2));
+    const { min, max } = amountRangeHelper(currency.code, type.code);
+    const minAmount = new Prisma.Decimal(min);
+    const maxAmount = new Prisma.Decimal(max);
 
-  for (const p of products) {
+    const code = `PROD-${String(i).padStart(3, '0')}`;
+
+    let createData = {
+      id: randomUUID(),
+      code,
+      name: `${type.name} ${name}`,
+      headline,
+      generalInfo,
+      requirements,
+      term,
+      audienceType,
+      rateType,
+      rate,
+      productTypeId: type.id,
+      currencyId: currency.id,
+      minAmount,
+      maxAmount,
+      active: true,
+    };
+
+    if (i === 1) {
+      createData.id = 'ebb61622-3bd9-4886-aa4b-bc99264fea24';
+    }
+
     await prisma.product.upsert({
-      where: { code: p.code },
+      where: { code },
       update: {},
-      create: {
-        code: p.code,
-        name: p.name,
-        description: p.description,
-        productTypeId: getTypeId(p.type),
-        currencyId: getCurrencyId(p.currency),
-        minAmount: p.min,
-        maxAmount: p.max,
-        active: true,
-      },
+      create: createData,
     });
   }
 }
 
 main()
   .catch((e) => {
+    console.error(e);
     process.exit(1);
   })
   .finally(async () => {

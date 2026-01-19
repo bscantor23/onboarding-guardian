@@ -1,15 +1,9 @@
-export class ProductResponseDto {
+export class ProductListResponseDto {
   id: string;
   code: string;
   name: string;
   headline: string;
-  generalInfo?: string | null;
-  requirements?: string | null;
-  term?: string | null;
-
   audienceType: string;
-  rateType?: string | null;
-  rate?: string | null;
 
   type: {
     id: string;
@@ -28,8 +22,6 @@ export class ProductResponseDto {
 
   minAmount: string;
   maxAmount: string;
-  active: boolean;
-
   createdAt: Date;
   updatedAt: Date;
 }

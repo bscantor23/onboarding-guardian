@@ -10,14 +10,18 @@ describe('ProductsController', () => {
     findOne: jest.fn(),
   };
 
-  const productFixture = {
+  const productListMock = {
     id: '3ca0e159-4ece-4f9f-ba85-1e77c7345a9f',
     code: 'SAV_BASIC',
     name: 'Ahorros Básica',
-    description: null,
-    active: true,
-    minAmount: '0',
-    maxAmount: '50000000',
+    headline: 'Beneficios para tu día a día',
+    audienceType: 'BOTH',
+    type: {
+      id: '8198c128-4345-42e1-895b-05f74339073d',
+      code: 'SAV',
+      name: 'Cuenta de Ahorros',
+      description: 'Producto de ahorro',
+    },
     currency: {
       id: '061eaa15-6333-4ca8-9bc6-73d9d7c18c06',
       code: 'COP',
@@ -25,12 +29,37 @@ describe('ProductsController', () => {
       symbol: '$',
       decimals: 2,
     },
+    minAmount: '0',
+    maxAmount: '50000000',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  const productMock = {
+    id: '3ca0e159-4ece-4f9f-ba85-1e77c7345a9f',
+    code: 'SAV_BASIC',
+    name: 'Ahorros Básica',
+    headline: 'Beneficios para tu día a día',
+    term: '360 días',
+    audienceType: 'BOTH',
+    rateType: 'EA',
+    rate: '10',
     type: {
       id: '8198c128-4345-42e1-895b-05f74339073d',
       code: 'SAV',
       name: 'Cuenta de Ahorros',
       description: 'Producto de ahorro',
     },
+    currency: {
+      id: '061eaa15-6333-4ca8-9bc6-73d9d7c18c06',
+      code: 'COP',
+      name: 'Peso colombiano',
+      symbol: '$',
+      decimals: 2,
+    },
+    minAmount: '0',
+    maxAmount: '50000000',
+    active: true,
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -50,16 +79,16 @@ describe('ProductsController', () => {
   });
 
   it('getProducts() should call the service method findAll and return a successful result', async () => {
-    serviceMock.findAll.mockResolvedValueOnce([productFixture]);
+    serviceMock.findAll.mockResolvedValueOnce([productListMock]);
 
     const result = await controller.getProducts();
 
     expect(serviceMock.findAll).toHaveBeenCalledTimes(1);
-    expect(result).toEqual([productFixture]);
+    expect(result).toEqual([productListMock]);
   });
 
   it('getProductById() should call the service method findOne with the parameter id and return a succesful return', async () => {
-    serviceMock.findOne.mockResolvedValueOnce(productFixture);
+    serviceMock.findOne.mockResolvedValueOnce(productMock);
 
     const result = await controller.getProductById(
       '3ca0e159-4ece-4f9f-ba85-1e77c7345a9f',
@@ -69,6 +98,6 @@ describe('ProductsController', () => {
     expect(serviceMock.findOne).toHaveBeenCalledWith(
       '3ca0e159-4ece-4f9f-ba85-1e77c7345a9f',
     );
-    expect(result).toEqual(productFixture);
+    expect(result).toEqual(productMock);
   });
 });

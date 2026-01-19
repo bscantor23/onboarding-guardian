@@ -42,7 +42,7 @@ describe('PrismaService', () => {
     const service = new PrismaService();
 
     await service.onModuleInit();
-    await service.onModuleDestroy();
+    await service.beforeApplicationShutdown();
 
     expect((service as any).$connect).toHaveBeenCalledTimes(1);
     expect((service as any).$disconnect).toHaveBeenCalledTimes(1);

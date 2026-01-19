@@ -26,7 +26,7 @@ export function TextField({
   error,
   rightSlot,
   autoComplete,
-}: TextFieldProps) {
+}: Readonly<TextFieldProps>) {
   return (
     <div className="flex flex-col">
       <div className="flex items-center justify-between pb-2 px-1">

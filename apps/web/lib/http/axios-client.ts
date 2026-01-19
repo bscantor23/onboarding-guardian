@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 import { ApiClientError } from "./api-error";
 
 export const apiClient = axios.create({
-  baseURL: process.env.NEW_PUBLIC_API_BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   timeout: 15000,
   headers: {
     "Content-Type": "application/json",
