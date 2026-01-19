@@ -4,12 +4,12 @@ export default function HomePage() {
   return (
     <div className="relative min-h-screen overflow-hidden">
       <main className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl flex-col items-center justify-center px-4 text-center sm:px-6">
-        <h1 className="mb-10 text-5xl font-black tracking-tight text-ink sm:text-6xl md:text-8xl">
+        <h1 className="mb-10 text-5xl font-black text-ink sm:text-6xl md:text-8xl">
           El Guardian de las{" "}
           <span className="text-primary">Aperturas Bancarias</span>
         </h1>
 
-        <p className="mx-auto mb-14 max-w-3xl text-lg leading-relaxed text-gray-500 sm:text-xl md:text-xl">
+        <p className="mx-auto mb-14 max-w-3xl text-lg text-gray-500 sm:text-xl md:text-xl">
           Sistema de registro digital bancario que protege los procesos de
           incorporación digital para nuevos clientes de acuerdo con catálogos de
           productos bancarios. Te invitamos a conocer más de nuestro ecosistema

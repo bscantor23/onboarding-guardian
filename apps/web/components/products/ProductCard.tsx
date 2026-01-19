@@ -73,7 +73,7 @@ export function ProductCard({
 
         <h3 className="mb-2 text-xl font-extrabold text-ink">{product.name}</h3>
 
-        <p className="mb-6 line-clamp-2 text-sm leading-relaxed text-gray-500">
+        <p className="mb-6 line-clamp-2 text-sm text-gray-500">
           {product.headline?.trim() ||
             "Sin descripción disponible para este producto"}
         </p>

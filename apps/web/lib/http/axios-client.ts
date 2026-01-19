@@ -4,6 +4,7 @@ import { tokenStore } from "../auth/token";
 
 export const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  proxy: false,
   timeout: 15000,
   headers: {
     "Content-Type": "application/json",

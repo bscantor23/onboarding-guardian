@@ -6,13 +6,13 @@ type TextFieldProps = {
   id: string;
   label: string;
   placeholder?: string;
-  type?: "text" | "password";
+  type?: "text" | "password" | "number" | "email";
   value: string;
   onChange: (value: string) => void;
   icon: IconDefinition;
   error?: string;
   rightSlot?: React.ReactNode;
-  autoComplete?: string;
+  required?: boolean;
 };
 
 export function TextField({
@@ -25,7 +25,7 @@ export function TextField({
   icon,
   error,
   rightSlot,
-  autoComplete,
+  required = false,
 }: Readonly<TextFieldProps>) {
   return (
     <div className="flex flex-col">
@@ -40,7 +40,6 @@ export function TextField({
         <input
           id={id}
           type={type}
-          autoComplete={autoComplete}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
@@ -50,6 +49,7 @@ export function TextField({
             "focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20",
             error && "border-red-400 focus:border-red-500 focus:ring-red-200",
           )}
+          required={required}
         />
 
         <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2">

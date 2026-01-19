@@ -66,7 +66,7 @@ export default async function ProductsPage({
       <main className="relative z-10 mx-auto w-full max-w-7xl px-4 py-10 sm:px-6">
         <div className="mb-12 flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
           <div className="max-w-2xl">
-            <h1 className="mb-3 text-3xl font-black tracking-tight text-ink md:text-4xl">
+            <h1 className="mb-3 text-3xl font-black text-ink md:text-4xl">
               Catálogo Productos
             </h1>
             <p className="text-lg text-gray-500">

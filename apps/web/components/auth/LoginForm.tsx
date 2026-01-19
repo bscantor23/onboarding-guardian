@@ -11,7 +11,6 @@ import {
 import { Button } from "../ui/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AuthService } from "@/lib/services/auth.service";
-import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/ToastProvider";
 import { FullscreenLoader } from "../ui/FullscreenLoader";
 import { tokenStore } from "@/lib/auth/token";
@@ -65,12 +64,12 @@ export function LoginForm({
         globalThis.location.assign("/onboarding");
       }, 1000);
     } catch (e: any) {
-      const msg =
+      const message =
         e?.message === "Invalid credentials"
           ? "Credenciales inválidas. Verifica e intenta de nuevo."
           : "Ocurrió un error al iniciar sesión.";
 
-      showToast(msg, "error", 2000);
+      showToast(message, "error", 2000);
     } finally {
       setTimeout(() => {
         setLoading(false);
@@ -92,7 +91,6 @@ export function LoginForm({
           onChange={setUsername}
           icon={faUser}
           error={errors.username}
-          autoComplete="username"
         />
 
         <TextField
@@ -104,7 +102,6 @@ export function LoginForm({
           onChange={setPassword}
           icon={faLock}
           error={errors.password}
-          autoComplete="current-password"
           rightSlot={
             <a
               className="text-xs font-bold text-primary hover:underline"

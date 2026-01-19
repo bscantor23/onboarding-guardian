@@ -59,7 +59,7 @@ export function AppHeader({
             <FontAwesomeIcon icon={faShieldHalved} className="text-[20px]" />
           </div>
 
-          <h2 className="text-lg font-extrabold tracking-tight text-ink">
+          <h2 className="text-lg font-extrabold text-ink">
             Onboarding Guardian
           </h2>
         </Link>
