@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { ProductsService } from "@/lib/services/products.service";
 import { ProductCard } from "@/components/products/ProductCard";
-import { Footer } from "@/components/ui/Footer";
 
 type SearchParams = {
   type?: string;
@@ -69,7 +68,7 @@ export default async function ProductsPage({
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative overflow-hidden">
       <main className="relative z-10 mx-auto w-full max-w-7xl px-4 py-10 sm:px-6">
         <div className="mb-12 flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
           <div className="max-w-2xl">
@@ -108,8 +107,6 @@ export default async function ProductsPage({
 
         {renderContent()}
       </main>
-
-      <Footer />
     </div>
   );
 }

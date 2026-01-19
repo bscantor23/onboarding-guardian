@@ -32,14 +32,15 @@ export function AppHeader({
       )}
     >
       <div className="mx-auto grid h-16 w-full max-w-7xl grid-cols-3 items-center px-4 sm:px-6">
-        <div className="flex items-center gap-3 justify-self-start">
+        <Link href="/" className="flex items-center gap-3 justify-self-start">
           <div className="flex items-center justify-center rounded-lg bg-primary p-1.5 text-white">
             <FontAwesomeIcon icon={faShieldHalved} className="text-[20px]" />
           </div>
+
           <h2 className="text-lg font-extrabold tracking-tight text-ink">
             {title}
           </h2>
-        </div>
+        </Link>
 
         <nav className="hidden justify-self-center items-center gap-8 md:flex">
           {nav.map((item) => {

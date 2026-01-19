@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import "./globals.css";
 import { Manrope } from "next/font/google";
 
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import { DotGridBackground } from "@/components/ui/DotGridBackground";
 import { AppHeader } from "@/components/layouts/AppHeader";
+import { AppFooter } from "@/components/layouts/AppFooter";
 import Link from "next/link";
+import "./globals.css";
+
 config.autoAddCss = false;
 
 const manrope = Manrope({
@@ -42,6 +44,8 @@ export default function RootLayout({
         />
 
         <main className="relative z-10">{children}</main>
+
+        <AppFooter />
       </body>
     </html>
   );

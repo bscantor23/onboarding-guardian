@@ -16,7 +16,7 @@ export function LoginCard() {
       </div>
       <div className="mb-8 text-center">
         <h1 className="pb-2 text-[32px] font-bold leading-tight tracking-tight text-ink">
-          Guardian
+          Onboarding
         </h1>
         <p className="text-base font-normal text-gray-500">
           Seguridad automatizada para aperturas virtuales
