@@ -45,12 +45,25 @@ function mappingListResponse(data: unknown): Product[] {
   return [];
 }
 
+function mappingGetByIdResponse(data: unknown): Product {
+  if (typeof data === "object" && data !== null) return data as Product;
+  throw new Error("Respuesta inválida al consultar el detalle del producto.");
+}
+
 export class ProductsService {
   async list(): Promise<Product[]> {
     try {
       const { data } = await apiClient.get("/products");
-      console.log(data);
       return mappingListResponse(data);
+    } catch (e: unknown) {
+      throw toApiClientError(e);
+    }
+  }
+
+  async getById(id: string): Promise<Product> {
+    try {
+      const { data } = await apiClient.get(`/products/${id}`);
+      return mappingGetByIdResponse(data);
     } catch (e: unknown) {
       throw toApiClientError(e);
     }

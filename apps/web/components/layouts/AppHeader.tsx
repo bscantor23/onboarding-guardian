@@ -64,10 +64,8 @@ export function AppHeader({
 
         <div className="flex items-center gap-3 justify-self-end">
           {rightSlot ?? (
-            <Link href="/login">
-              <Button variant="secondary" className="w-auto px-4">
-                Iniciar sesión
-              </Button>
+            <Link href="/login" className="inline-flex">
+              <Button variant="secondary">Iniciar sesión</Button>
             </Link>
           )}
         </div>

@@ -16,7 +16,7 @@ export function Button({
     primary:
       "h-14 w-full bg-primary text-white shadow-primaryGlow hover:bg-[#00695c] focus:outline-none focus:ring-2 focus:ring-primary/20",
     secondary:
-      "h-10 w-10 bg-mint text-ink hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-primary/20",
+      "inline-flex h-10 items-center justify-center rounded-lg bg-mint px-4 text-sm font-bold text-ink transition-colors hover:bg-primary/10",
   };
 
   return (

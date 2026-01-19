@@ -9,6 +9,7 @@ export class ProductsRepository {
   findMany() {
     return this.prisma.product.findMany({
       orderBy: { createdAt: 'desc' },
+      where: { active: true },
       select: PRODUCT_SELECT,
     });
   }

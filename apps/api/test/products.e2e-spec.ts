@@ -12,7 +12,7 @@ describe('Products (e2e)', () => {
     code: 'SAV_BASIC',
     name: 'Ahorros Básica',
     headline: 'Beneficios para tu día a día',
-    audienceType: 'BOTH',
+    audienceType: 'ALL',
     type: {
       id: '8198c128-4345-42e1-895b-05f74339073d',
       code: 'SAV',
@@ -38,7 +38,7 @@ describe('Products (e2e)', () => {
     name: 'Ahorros Básica',
     headline: 'Beneficios para tu día a día',
     term: '360 días',
-    audienceType: 'BOTH',
+    audienceType: 'ALL',
     rateType: 'EA',
     rate: '10',
     type: {
@@ -67,7 +67,7 @@ describe('Products (e2e)', () => {
     name: 'Corriente USD',
     headline: 'Beneficios para tu día a día',
     term: '360 días',
-    audienceType: 'BOTH',
+    audienceType: 'ALL',
     rateType: 'EA',
     rate: '10',
     type: {

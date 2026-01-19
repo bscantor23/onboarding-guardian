@@ -4,7 +4,7 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { PRODUCT_TYPES } from './constants/product-types';
 import { CURRENCIES } from './constants/currencies';
 import { DESCRIPTIONS } from './constants/descriptions';
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL,
@@ -15,6 +15,14 @@ const prisma = new PrismaClient({ adapter });
 const mapHelper = <T>(map: readonly T[]): T => {
   return map[Math.floor(Math.random() * map.length)];
 };
+
+function requirementsTextHelper(pool: readonly string[]): string {
+  if (!pool.length) return '';
+
+  const count = Math.floor(Math.random() * pool.length) + 1;
+  const selected = [...pool].slice(0, count);
+  return selected.join(' ');
+}
 
 function amountRangeHelper(currencyCode: string, productTypeCode: string) {
   const isCreditLike =
@@ -87,7 +95,7 @@ async function main() {
     const rateType = mapHelper(DESCRIPTIONS.rateTypes);
     const headline = mapHelper(DESCRIPTIONS.headlines);
     const generalInfo = mapHelper(DESCRIPTIONS.generalInfos);
-    const requirements = mapHelper(DESCRIPTIONS.requirements);
+    const requirements = requirementsTextHelper(DESCRIPTIONS.requirements);
     const term = mapHelper(DESCRIPTIONS.termPool);
 
     const rate = new Prisma.Decimal((10 + Math.random() * 20).toFixed(2));

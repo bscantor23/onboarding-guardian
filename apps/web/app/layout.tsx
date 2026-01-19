@@ -8,6 +8,7 @@ import { AppHeader } from "@/components/layouts/AppHeader";
 import { AppFooter } from "@/components/layouts/AppFooter";
 import Link from "next/link";
 import "./globals.css";
+import { Button } from "@/components/ui/Button";
 
 config.autoAddCss = false;
 
@@ -36,9 +37,7 @@ export default function RootLayout({
           nav={[{ label: "Productos", href: "/products" }]}
           rightSlot={
             <Link href="/login" className="inline-flex">
-              <span className="inline-flex h-10 items-center justify-center rounded-lg bg-mint px-4 text-sm font-bold text-ink transition-colors hover:bg-primary/10">
-                Iniciar sesión
-              </span>
+              <Button variant="secondary">Iniciar sesión</Button>
             </Link>
           }
         />

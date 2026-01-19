@@ -59,7 +59,7 @@ model ProductType {
 enum AudienceType {
     NATURAL
     BUSINESS
-    BOTH
+    ALL
 }
 
 model Product {
@@ -71,7 +71,7 @@ model Product {
     requirements String?
     term         String?
 
-    audienceType AudienceType @default(BOTH)
+    audienceType AudienceType @default(ALL)
     rateType     String?      @default("EA")
     rate         Decimal      @db.Decimal(10, 2)
 

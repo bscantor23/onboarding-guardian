@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ProductsService } from "@/lib/services/products.service";
-import { ProductCard } from "@/components/products/ProductCard";
+import { ProductsGrid } from "@/components/products/ProductsGrid";
 
 type SearchParams = {
   type?: string;
@@ -58,13 +58,7 @@ export default async function ProductsPage({
       );
     }
 
-    return (
-      <section className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
-        {filteredProducts.map((p) => (
-          <ProductCard key={p.id} product={p} />
-        ))}
-      </section>
-    );
+    return <ProductsGrid products={filteredProducts} />;
   };
 
   return (

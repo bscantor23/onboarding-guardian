@@ -15,8 +15,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "../ui/Button";
 import { formatMoney } from "@/lib/utils/formatMoney";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { parseAudienceType } from "@/lib/utils/productParsers";
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({
+  product,
+  onViewDetails,
+}: {
+  product: Product;
+  onViewDetails: (id: string) => void;
+}) {
   const TYPE_ICON_MAP: Record<string, IconDefinition> = {
     SAVINGS: faPiggyBank,
     CHECKING: faBuildingColumns,
@@ -53,7 +60,7 @@ export function ProductCard({ product }: { product: Product }) {
             {audience ? (
               <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-[10px] font-black uppercase text-gray-700">
                 <FontAwesomeIcon icon={faUsers} className="h-3.5 w-3.5" />
-                {audience}
+                {parseAudienceType(audience)}
               </span>
             ) : null}
 
@@ -91,8 +98,12 @@ export function ProductCard({ product }: { product: Product }) {
           </div>
         </div>
 
-        <Button type="button" className="h-12 w-full rounded-xl">
-          <span>Aplica ahora</span>
+        <Button
+          onClick={() => onViewDetails(product.id)}
+          type="button"
+          className="h-12 w-full rounded-xl"
+        >
+          <span>Ver detalles</span>
           <FontAwesomeIcon icon={faChevronRight} className="h-4 w-4 text-sm" />
         </Button>
       </div>

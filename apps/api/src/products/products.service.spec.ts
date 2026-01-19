@@ -16,7 +16,7 @@ describe('ProductsService', () => {
     code: 'SAV_BASIC',
     name: 'Ahorros Básica',
     headline: 'Beneficios para tu día a día',
-    audienceType: 'BOTH',
+    audienceType: 'ALL',
     type: {
       id: '8198c128-4345-42e1-895b-05f74339073d',
       code: 'SAV',
@@ -42,7 +42,7 @@ describe('ProductsService', () => {
     name: 'Ahorros Básica',
     headline: 'Beneficios para tu día a día',
     term: '360 días',
-    audienceType: 'BOTH',
+    audienceType: 'ALL',
     rateType: 'EA',
     rate: '10',
     type: {
