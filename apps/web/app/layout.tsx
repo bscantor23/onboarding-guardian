@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 
-import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import { DotGridBackground } from "@/components/ui/DotGridBackground";
 import { AppHeader } from "@/components/layouts/AppHeader";
 import { AppFooter } from "@/components/layouts/AppFooter";
-import Link from "next/link";
+import { ToastProvider } from "@/components/ui/ToastProvider";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 import "./globals.css";
-import { Button } from "@/components/ui/Button";
 
 config.autoAddCss = false;
 
@@ -33,16 +32,11 @@ export default function RootLayout({
       <body className="bg-background text-ink transition-colors duration-300">
         <DotGridBackground />
 
-        <AppHeader
-          nav={[{ label: "Productos", href: "/products" }]}
-          rightSlot={
-            <Link href="/login" className="inline-flex">
-              <Button variant="secondary">Iniciar sesión</Button>
-            </Link>
-          }
-        />
+        <AppHeader />
 
-        <main className="relative z-10">{children}</main>
+        <main className="relative z-10">
+          <ToastProvider>{children}</ToastProvider>
+        </main>
 
         <AppFooter />
       </body>

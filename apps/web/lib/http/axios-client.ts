@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { ApiClientError } from "./api-error";
+import { tokenStore } from "../auth/token";
 
 export const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -7,6 +8,15 @@ export const apiClient = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+});
+
+apiClient.interceptors.request.use((config) => {
+  const token = tokenStore.get();
+  if (token) {
+    config.headers = config.headers ?? {};
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 function isAxiosError(error: unknown): error is AxiosError<any> {
